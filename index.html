@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="scripts/script.js">
-    </script>
     <meta charset="utf-8">
     <link rel="stylesheet" href="resources/css/styles.css">
     <title>RPG - Dragon Repeller</title>
@@ -27,5 +25,9 @@
         Welcome to Dragon Repeller. You must defeat the dragon that is preventing people from leaving the town. You are in the town square. Where do you want to go? Use the buttons above.
       </div>
     </div>
+    <!--script tag was in the head of HTML. This means your code before the browser has finished reading the HTML, and 
+      document.querySelector() will not see the button - because the browser hasn't processed it yet. Thats why script must be at the end of 'body' element!-->
+    <script src="scripts/script.js">
+    </script>
   </body>
 </html>

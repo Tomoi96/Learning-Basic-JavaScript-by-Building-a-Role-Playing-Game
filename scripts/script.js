@@ -20,6 +20,24 @@ const monsterStats = document.querySelector("#monsterStats");
 const monsterName = document.querySelector("#monsterName");
 const monsterHealthText = document.querySelector("#monsterHealth");
 //adding array
+const weapons = [
+    {                                               
+        name: "stick",                        
+        power: 5,
+    },
+    {                                               
+        name: "dagger",                        
+        power: 30,
+    },
+    {                                               
+        name: "claw hammer",                        
+        power: 50,
+    },
+    {                                               
+        name: "sword",                        
+        power: 100,
+    },
+];
 const locations = [
     {                                               /*One object is everything inside '{}' brackets.*/
         name: "town square",
@@ -70,11 +88,27 @@ function fightDragon() {
     console.log("Fighting dragon.")
 }
 function buyHealth() {
-    gold -= 10;             /**shorthand way to add or subtract from a variable called compound assignment. For example, changing gold = gold - 10 to compound assignment would look like gold -= 10. */
-    health += 10;
+        if (gold >= 10) {           /**if statement condition to check if gold is greater than or equal to 10.*/
+            gold -= 10;             /**shorthand way to add or subtract from a variable called compound assignment. For example, changing gold = gold - 10 to compound assignment would look like gold -= 10. */
+            health += 10;
+            goldText.innerText = gold;
+            healthText.innerText = health;
+        } else {
+            text.innerText = "You do not have enough gold to buy health."
+        }
 }
 function buyWeapon() {
-
+    if (gold >= 30) {
+        gold -= 30;
+        currentWeapon++; 
+        /**The value of the currentWeapon variable corresponds to an index in the weapons array. The player starts with a stick, since currentWeapon starts at 0 
+         * and weapons[0] is the stick weapon.In the buyWeapon function, use compound assignment to add 1 to currentWeapon - the user is buying the next weapon 
+         * in the weapons array. (currentWeapon += 1;) - changed with increment '++' to increase number from default 0 to 1.*/
+        goldText.innerText = gold;
+        let newWeapon = weapons[currentWeapon].name; /**Bracket notation to access an object within the weapons array and assign it to your newWeapon variable.
+        weapons[currentWeapon] is an object. Use dot notation to get the name property of that object. */
+        text.innerText = "You now have a " + newWeapon + "."; /**update the goldText element to display the new value of gold, and update the text element to display You now have a new weapon. You can insert variables into a string with the concatenation operator '+'.*/
+    }
 }
 function fightSlime() {
 

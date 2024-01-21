@@ -98,6 +98,7 @@ function buyHealth() {
         }
 }
 function buyWeapon() {
+if (currentWeapon < 3) { /**Once a player has the best weapon, they cannot buy another one. Wraping all of the code in your 'buyWeapon' function inside another if statement. The condition should check if 'currentWeapon' is less than 3 - the index of the last weapon. */
     if (gold >= 30) {
         gold -= 30;
         currentWeapon++; 
@@ -108,8 +109,15 @@ function buyWeapon() {
         let newWeapon = weapons[currentWeapon].name; /**Bracket notation to access an object within the weapons array and assign it to your newWeapon variable.
         weapons[currentWeapon] is an object. Use dot notation to get the name property of that object. */
         text.innerText = "You now have a " + newWeapon + "."; /**update the goldText element to display the new value of gold, and update the text element to display You now have a new weapon. You can insert variables into a string with the concatenation operator '+'.*/
+        inventory.push(newWeapon); /**Add the 'newWeapon' to the end of the 'inventory' array using the 'push()' method. */
+        text.innerText += " In your inventory you have: "
+        text.innerText += " In your inventory you have: " + inventory; /**Using concatenation, '+' operator to add the contents of 'inventory' to the string. */
+    } else {
+        text.innerText = "You do not have enough gold to buy a weapon."
     }
 }
+}
+
 function fightSlime() {
 
 }

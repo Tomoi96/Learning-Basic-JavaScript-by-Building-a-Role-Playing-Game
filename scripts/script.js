@@ -98,7 +98,10 @@ function buyHealth() {
         }
 }
 function buyWeapon() {
-if (currentWeapon < 3) { /**Once a player has the best weapon, they cannot buy another one. Wraping all of the code in your 'buyWeapon' function inside another if statement. The condition should check if 'currentWeapon' is less than 3 - the index of the last weapon. */
+if (currentWeapon < weapons.length - 1) { /**Once a player has the best weapon, they cannot buy another one. Wraping all of the code in your 'buyWeapon' function inside 
+another if statement. The condition should check if 'currentWeapon' is less than 3 - the index of the last weapon. (Value < 3 changed to '.length' property) Arrays have a length property that returns the number of items in the array. 
+You may want to add new values to the weapons array in the future. 
+Error to fix. The 'currentWeapon' variable is the index of the weapons array, but array indexing starts at zero. The index of the last element in an array is one less than the length of the array.*/
     if (gold >= 30) {
         gold -= 30;
         currentWeapon++; 
@@ -115,9 +118,24 @@ if (currentWeapon < 3) { /**Once a player has the best weapon, they cannot buy a
     } else {
         text.innerText = "You do not have enough gold to buy a weapon."
     }
+} else {
+    text.innerText = "You already have the most powerful weapon!"
+    button2.innerText = "Sell weapon for 15 gold" /**Once a player has the most powerful weapon, give them the ability to sell their old weapons. In the outer else statement, set 'button2.innerText' to "Sell weapon for 15 gold". Also set 'button2.onclick' to the function name 'sellWeapon'. */
+    button2.onclick = sellWeapon
+  }
 }
+function sellWeapon() {
+    if (inventory.length > 1) { /**Players should not be able to sell their only weapon. Inside the 'sellWeapon' function, adding an 'if' statement with a condition that checks if the length of the inventory array is greater than 1. */
+        gold += 15;             /**Inside the if statement, set 'gold' equal to 15 more than its current value. Also updating 'goldText.innerText' to the new value. */
+        goldText.innerText = gold;
+        let currentWeapon = inventory.shift(); /**Notice that you already have a 'currentWeapon' variable elsewhere in your code. Since you are using the 'let' (reassignable variable) keyword instead of 'var', the new 'currentWeapon' is scoped only to this 'if' statement. At the close of the 'if' statement, the old currentWeapon will be used again. 
+        The 'shift()' method on an array removes the first element in the array and returns it. Use this method to take the first element from the 'inventory' array and assign it to your 'currentWeapon' variable. */
+        text.innerText = "You sold a " + currentWeapon + "." ;
+        text.innerText += " In your inventory you have: " + inventory ;
+    } else {
+        text.innerText = "Don't sell your only weapon!";
+      }                                       
 }
-
 function fightSlime() {
 
 }

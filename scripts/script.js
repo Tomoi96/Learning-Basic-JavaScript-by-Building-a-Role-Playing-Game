@@ -38,6 +38,23 @@ const weapons = [
         power: 100,
     },
 ];
+const monsters = [      /**Monster stats array. */
+    {
+      name: "slime",
+      level: 2,
+      health: 15
+    },
+    {
+      name: "fanged beast",
+      level: 8,
+      health: 60
+    },
+    {
+      name: "dragon",
+      level: 20,
+      health: 300
+    }
+  ]
 const locations = [
     {                                               /*One object is everything inside '{}' brackets.*/
         name: "town square",
@@ -57,6 +74,12 @@ const locations = [
         "button functions": [fightSlime, fightBeast, goTown],
         text: "You enter the cave. You see some monsters."
       },
+      {
+        name: "fight",  /**object for monster fighting. */
+        "button text": ["Attack", "Dodge", "Run"],
+        "button functions": [attack, dodge, goTown],
+        text: "You are fighting a monster."
+      }
 ];
 // initialize buttons
 /*button1 represents your first button element. These elements have a special property called onclick, which you can use to determine what happens when 
@@ -84,9 +107,7 @@ function goStore() {
 function goCave() {
     update(locations[2]);
 }
-function fightDragon() {
-    console.log("Fighting dragon.")
-}
+
 function buyHealth() {
         if (gold >= 10) {           /**if statement condition to check if gold is greater than or equal to 10.*/
             gold -= 10;             /**shorthand way to add or subtract from a variable called compound assignment. For example, changing gold = gold - 10 to compound assignment would look like gold -= 10. */
@@ -137,8 +158,27 @@ function sellWeapon() {
       }                                       
 }
 function fightSlime() {
-
+    fighting = 0;
+    goFight();
 }
 function fightBeast() {
+    fighting = 1;
+    goFight();
+}
+function fightDragon() {
+    fighting = 2;
+    goFight();
+}
+function goFight() {
+    update(locations[3]); /** Using object from 'locations' array, changes buttons text and text. */
+    monsterHealth = monsters[fighting].health;  /**taking health property from 'monsters' array. */
+    monsterStats.style.display = "block"; /**HTML element that shows the monster's stats has been hidden with CSS. Display the monsterStats element by updating the display property of the style property to block. */
+    monsterName.innerText = monsters[fighting].name; /**Set the innerText property of monsterName to be the name property of the current monster. Same for monsterHealthText and the health property. */
+    monsterHealthText.innerText = monsterHealth; 
+}
+function attack() {
+
+}
+function dodge() {
   
 }

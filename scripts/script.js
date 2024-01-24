@@ -177,8 +177,27 @@ function goFight() {
     monsterHealthText.innerText = monsterHealth; 
 }
 function attack() {
-
+    text.innerText = "The " + monsters[fighting].name + " attacks.";
+    text.innerText += " You attack it with your " + weapons[currentWeapon].name + "."; /**adding the string You attack it with your <weapon>. to the text value, replacing <weapon> with the player's current weapon. */
+    health = health -= monsters[fighting].level; /**Set 'health' to equal 'health' minus the monster's level. Remember you can get this from the 'monsters[fighting].level' property. */
+    monsterHealth -= weapons[currentWeapon].power + Math.floor(Math.random() * xp) + 1; /**Set 'monsterHealth' to 'monsterHealth' minus the power of the player's current weapon. Remember you have the 'currentWeapon' variable and the power property. */
+   /**The 'Math' object in JavaScript contains static properties and methods for mathematical constants and functions. One of those is 'Math.random()', which generates a random number from 0 (inclusive) to 1 (exclusive). Another is 'Math.floor()', which rounds a given number down to the nearest integer.
+Using these, you can generate a random number within a range. For example, this generates a random number between 1 and 5: Math.floor(Math.random() * 5) + 1;.
+Following this pattern, we use the addition operator (+) to add a random number between 1 and the value of xp to our "monsterHealth -= weapons[currentWeapon].power."" */
+    healthText.innerText = health;
+    monsterHealthText.innerText = monsterHealth; /**Update 'healthText.innerText' and 'monsterHealthText.innerText' to equal 'health' and 'monsterHealth'. */
+    if (health <= 0) {      /**'if' statement to check if health is less than or equal to 0. If it is, call the 'lose' function. */
+        lose();
+      } else if (monsterHealth <= 0) {  /**At the end of your 'if' statement, add an 'else if' statement to check if 'monsterHealth' is less than or equal to 0. In your 'else if', call the 'defeatMonster' function. */
+        defeatMonster();
+      }
 }
 function dodge() {
+  
+}
+function defeatMonster() {
+
+}
+function lose() {
   
 }

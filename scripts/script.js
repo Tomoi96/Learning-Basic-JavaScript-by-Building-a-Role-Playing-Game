@@ -79,7 +79,19 @@ const locations = [
         "button text": ["Attack", "Dodge", "Run"],
         "button functions": [attack, dodge, goTown],
         text: "You are fighting a monster."
-      }
+      },
+      {
+        name: "kill monster",   /**object for monster kill. */
+        "button text": ["Go to town square", "Go to town square", "Go to town square"],
+        "button functions": [goTown, goTown, goTown],
+        text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.'
+      },
+      {
+        name: "lose",   /**Object for game lost. */
+        "button text": ["REPLAY?", "REPLAY?", "REPLAY?"],
+        "button functions": [restart, restart, restart],
+        text: "You die. ☠️"
+      },
 ];
 // initialize buttons
 /*button1 represents your first button element. These elements have a special property called onclick, which you can use to determine what happens when 
@@ -90,6 +102,7 @@ button3.onclick = fightDragon;
 /*Functions are special tools that allow you to run sections of code at specific times. You can declare functions using the 'function' keyword. 
 Here is an example of a function called 'functionName' - note the opening and closing curly braces. These indicate the section of code that is within the function.*/
 function update(location) { /*data is used from array 'const locations'*/
+    monsterStats.style.display = "none";    /**After a monster is defeated, the monster's stat box should no longer display. */
     button1.innerText = location["button text"][0]; 
     button2.innerText = location["button text"][1];
     button3.innerText = location["button text"][2];
@@ -190,14 +203,33 @@ Following this pattern, we use the addition operator (+) to add a random number 
         lose();
       } else if (monsterHealth <= 0) {  /**At the end of your 'if' statement, add an 'else if' statement to check if 'monsterHealth' is less than or equal to 0. In your 'else if', call the 'defeatMonster' function. */
         defeatMonster();
+      } if (fighting === 2) {   /**Inside the else if block, create another if and else statement. If the player is fighting the dragon (fighting would be 2), call the 'winGame' function. Move the defeatMonster() call to the else block. For this step, you will need to use the strict equality (===) operator to check if fighting is equal to 2. The strict equality operator will check if the values are equal and if they are the same data type. */
+        winGame();
+      } else {
+        defeatMonster();
       }
 }
 function dodge() {
-  
+    text.innerText = "You dodge the attack from the " + monsters[fighting].name;
 }
 function defeatMonster() {
-
+    gold += Math.floor(monsters[fighting].level * 6.7); /**Set 'gold' equal to 'gold' plus the monster's level times 6.7. You can get the monster's level with the 'level' property. */
+    xp += monsters[fighting].level;  /**Set 'xp' to 'xp' plus the monster's level. */
+    goldText.innerText = gold;  /**Update 'goldText' and 'xpText' to display the updated values. */
+    xpText.innerText = xp;
+    update(locations[4]); /**Finish the 'defeatMonster' function by calling the update function with 'locations[4]' as the argument. */
 }
 function lose() {
-  
+    update(locations[5]);
 }
+function restart() {
+    xp = 0;
+    health = 100;
+    gold = 50;
+    currentWeapon = 0;
+    inventory = ["stick"];
+    goldText.innerText = gold;
+    healthText.innerText = health;
+    xpText.innerText = xp;
+    goTown();
+    }

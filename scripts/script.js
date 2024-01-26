@@ -1,5 +1,4 @@
 //adding variables and their values. 'let' variables can be reassigned.
-let camperbot;
 let xp = 0;
 let health = 100;
 let gold = 50;
@@ -13,7 +12,7 @@ const button1 = document.querySelector("#button1");
 const button2 = document.querySelector("#button2");
 const button3 = document.querySelector("#button3");
 const text = document.querySelector("#text");
-const xpText = document.querySelector("#xptext");
+const xpText = document.querySelector("#xpText");
 const healthText = document.querySelector("#healthText");
 const goldText = document.querySelector("#goldText");
 const monsterStats = document.querySelector("#monsterStats");
@@ -74,24 +73,30 @@ const locations = [
         "button functions": [fightSlime, fightBeast, goTown],
         text: "You enter the cave. You see some monsters."
       },
-      {
+    {
         name: "fight",  /**object for monster fighting. */
         "button text": ["Attack", "Dodge", "Run"],
         "button functions": [attack, dodge, goTown],
         text: "You are fighting a monster."
-      },
-      {
+    },
+    {
         name: "kill monster",   /**object for monster kill. */
         "button text": ["Go to town square", "Go to town square", "Go to town square"],
         "button functions": [goTown, goTown, goTown],
         text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.'
-      },
-      {
+    },
+    {
         name: "lose",   /**Object for game lost. */
         "button text": ["REPLAY?", "REPLAY?", "REPLAY?"],
         "button functions": [restart, restart, restart],
         text: "You die. ☠️"
-      },
+    },
+    {
+        name: "win",
+        "button text": ["REPLAY?", "REPLAY?", "REPLAY?"],
+        "button functions": [restart, restart, restart],
+        text: "You defeat the dragon! YOU WIN THE GAME! 🎉"
+    },
 ];
 // initialize buttons
 /*button1 represents your first button element. These elements have a special property called onclick, which you can use to determine what happens when 
@@ -192,7 +197,7 @@ function goFight() {
 function attack() {
     text.innerText = "The " + monsters[fighting].name + " attacks.";
     text.innerText += " You attack it with your " + weapons[currentWeapon].name + "."; /**adding the string You attack it with your <weapon>. to the text value, replacing <weapon> with the player's current weapon. */
-    health = health -= monsters[fighting].level; /**Set 'health' to equal 'health' minus the monster's level. Remember you can get this from the 'monsters[fighting].level' property. */
+    health -= monsters[fighting].level; /**Set 'health' to equal 'health' minus the monster's level. Remember you can get this from the 'monsters[fighting].level' property. */
     monsterHealth -= weapons[currentWeapon].power + Math.floor(Math.random() * xp) + 1; /**Set 'monsterHealth' to 'monsterHealth' minus the power of the player's current weapon. Remember you have the 'currentWeapon' variable and the power property. */
    /**The 'Math' object in JavaScript contains static properties and methods for mathematical constants and functions. One of those is 'Math.random()', which generates a random number from 0 (inclusive) to 1 (exclusive). Another is 'Math.floor()', which rounds a given number down to the nearest integer.
 Using these, you can generate a random number within a range. For example, this generates a random number between 1 and 5: Math.floor(Math.random() * 5) + 1;.
@@ -202,12 +207,8 @@ Following this pattern, we use the addition operator (+) to add a random number 
     if (health <= 0) {      /**'if' statement to check if health is less than or equal to 0. If it is, call the 'lose' function. */
         lose();
       } else if (monsterHealth <= 0) {  /**At the end of your 'if' statement, add an 'else if' statement to check if 'monsterHealth' is less than or equal to 0. In your 'else if', call the 'defeatMonster' function. */
-        defeatMonster();
-      } if (fighting === 2) {   /**Inside the else if block, create another if and else statement. If the player is fighting the dragon (fighting would be 2), call the 'winGame' function. Move the defeatMonster() call to the else block. For this step, you will need to use the strict equality (===) operator to check if fighting is equal to 2. The strict equality operator will check if the values are equal and if they are the same data type. */
-        winGame();
-      } else {
-        defeatMonster();
-      }
+      fighting === 2 ? winGame() : defeatMonster();   /**Inside the else if block, create another if and else statement. If the player is fighting the dragon (fighting would be 2), call the 'winGame' function. Move the defeatMonster() call to the else block. For this step, you will need to use the strict equality (===) operator to check if fighting is equal to 2. The strict equality operator will check if the values are equal and if they are the same data type. */
+    } /**'if-else' changed to ternary operator - JavaScript has a conditional operator called the ternary operator. This can be used as a one-line if-else statement. The syntax is: condition ? true : false. */
 }
 function dodge() {
     text.innerText = "You dodge the attack from the " + monsters[fighting].name;
@@ -222,6 +223,9 @@ function defeatMonster() {
 function lose() {
     update(locations[5]);
 }
+function winGame() {
+    update(locations[6]);
+  }
 function restart() {
     xp = 0;
     health = 100;

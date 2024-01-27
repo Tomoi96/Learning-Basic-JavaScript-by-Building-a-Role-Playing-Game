@@ -197,11 +197,16 @@ function goFight() {
 function attack() {
     text.innerText = "The " + monsters[fighting].name + " attacks.";
     text.innerText += " You attack it with your " + weapons[currentWeapon].name + "."; /**adding the string You attack it with your <weapon>. to the text value, replacing <weapon> with the player's current weapon. */
-    health -= monsters[fighting].level; /**Set 'health' to equal 'health' minus the monster's level. Remember you can get this from the 'monsters[fighting].level' property. */
-    monsterHealth -= weapons[currentWeapon].power + Math.floor(Math.random() * xp) + 1; /**Set 'monsterHealth' to 'monsterHealth' minus the power of the player's current weapon. Remember you have the 'currentWeapon' variable and the power property. */
-   /**The 'Math' object in JavaScript contains static properties and methods for mathematical constants and functions. One of those is 'Math.random()', which generates a random number from 0 (inclusive) to 1 (exclusive). Another is 'Math.floor()', which rounds a given number down to the nearest integer.
-Using these, you can generate a random number within a range. For example, this generates a random number between 1 and 5: Math.floor(Math.random() * 5) + 1;.
-Following this pattern, we use the addition operator (+) to add a random number between 1 and the value of xp to our "monsterHealth -= weapons[currentWeapon].power."" */
+    health -= getMonsterAttackValue(monsters[fighting].level); /**Set 'health' to equal 'health' minus the monster's level. Remember you can get this from the 'monsters[fighting].level' property. */
+    /**Inside your attack function, change your "health -= monsters[fighting].level;"" line to "health -= getMonsterAttackValue(monsters[fighting].level);"". This sets 'health' equal to 'health' minus the return value of the 'getMonsterAttackValue' function, and passes the level of the monster as an argument. */
+    if (isMonsterHit()) {
+        monsterHealth -= weapons[currentWeapon].power + Math.floor(Math.random() * xp) + 1; /**Set 'monsterHealth' to 'monsterHealth' minus the power of the player's current weapon. Remember you have the 'currentWeapon' variable and the power property. */
+        /**The 'Math' object in JavaScript contains static properties and methods for mathematical constants and functions. One of those is 'Math.random()', which generates a random number from 0 (inclusive) to 1 (exclusive). Another is 'Math.floor()', which rounds a given number down to the nearest integer.
+     Using these, you can generate a random number within a range. For example, this generates a random number between 1 and 5: Math.floor(Math.random() * 5) + 1;.
+     Following this pattern, we use the addition operator (+) to add a random number between 1 and the value of xp to our "monsterHealth -= weapons[currentWeapon].power."" */
+    } else {
+        text.innerText += " You miss.";
+      }
     healthText.innerText = health;
     monsterHealthText.innerText = monsterHealth; /**Update 'healthText.innerText' and 'monsterHealthText.innerText' to equal 'health' and 'monsterHealth'. */
     if (health <= 0) {      /**'if' statement to check if health is less than or equal to 0. If it is, call the 'lose' function. */
@@ -209,7 +214,19 @@ Following this pattern, we use the addition operator (+) to add a random number 
       } else if (monsterHealth <= 0) {  /**At the end of your 'if' statement, add an 'else if' statement to check if 'monsterHealth' is less than or equal to 0. In your 'else if', call the 'defeatMonster' function. */
       fighting === 2 ? winGame() : defeatMonster();   /**Inside the else if block, create another if and else statement. If the player is fighting the dragon (fighting would be 2), call the 'winGame' function. Move the defeatMonster() call to the else block. For this step, you will need to use the strict equality (===) operator to check if fighting is equal to 2. The strict equality operator will check if the values are equal and if they are the same data type. */
     } /**'if-else' changed to ternary operator - JavaScript has a conditional operator called the ternary operator. This can be used as a one-line if-else statement. The syntax is: condition ? true : false. */
+    if (Math.random() <= .1 && inventory.length !== 1) {  /**On every attack, there should be a chance that the player's weapon breaks. Use the logical AND operator && to add a second condition to your if statement. The player's weapon should only break if 'inventory.length' does not equal (!==) 1. */
+        text.innerText += " Your " + inventory.pop() + " breaks."; /**Use the '+=' operator to add Your <weapon> breaks., with a space in front of "Your", to the end of text.innerText. Replace <weapon> with the last item in the inventory array using inventory.pop(), which will remove the last item in the array AND return it so it appears in your string. */
+        currentWeapon--; /**Increment operator ++ can be used to increase a variable's value by 1. There is also a decrement operator -- that can be used to decrease a variable's value by 1. Decrement the value of 'currentWeapon' in your if statement, after you update the text. */
+    }
 }
+function getMonsterAttackValue(level) {
+    const hit = (level * 5) - (Math.floor(Math.random() * xp)); /**This will set the monster's attack to five times their level minus a random number between 0 and the player's xp. */
+    console.log(hit); /**Log the value of hit to the console to use in debugging. Remember that you can do this with console.log(). */
+    return hit > 0 ? hit : 0;  /**Functions run specific blocks of code when they are called, but they can also return a value. This value can be assigned to a variable and used elsewhere in your code. Use the return keyword to return the value of hit at the end of the function. In 'getMonsterAttackValue', change 'return hit' to a ternary operator that returns 'hit' if hit is greater than 0, or returns 0 if it is not. */
+}
+function isMonsterHit () {
+    return Math.random() > .2 || health < 20  /**This will return a boolean value (true or false) to be used in your if statement. Return the result of the comparison "Math.random() > .2." */
+}                                              /**The player should hit if either Math.random() > .2 or if the player's health is less than 20. At the end of your return statement, use the logical or operator || and check if health is less than 20. The logical or operator will use the first value if it is truthy – that is, anything apart from NaN, null, undefined, 0, -0, 0n, "", and false. Otherwise, it will use the second value. For example: num < 10 || num > 20. */
 function dodge() {
     text.innerText = "You dodge the attack from the " + monsters[fighting].name;
 }
@@ -237,3 +254,15 @@ function restart() {
     xpText.innerText = xp;
     goTown();
     }
+function easterEgg () {
+  update(locations[7]);
+}
+function pickTwo() {
+ pick(2);
+}
+function pickEight() {
+  pick(8);
+}
+function pick (guess) {
+  
+}

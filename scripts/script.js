@@ -82,7 +82,7 @@ const locations = [
     {
         name: "kill monster",   /**object for monster kill. */
         "button text": ["Go to town square", "Go to town square", "Go to town square"],
-        "button functions": [goTown, goTown, goTown],
+        "button functions": [goTown, goTown, easterEgg],
         text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.'
     },
     {
@@ -97,6 +97,12 @@ const locations = [
         "button functions": [restart, restart, restart],
         text: "You defeat the dragon! YOU WIN THE GAME! 🎉"
     },
+    {
+        name: "easter egg",
+        "button text": ["2", "8", "Go to town square?"],
+        "button functions": [pickTwo, pickEight, goTown],
+        text: "You find a secret game. Pick a number above. Ten numbers will be randomly chosen between 0 and 10. If the number you choose matches one of the random numbers, you win!"
+      }
 ];
 // initialize buttons
 /*button1 represents your first button element. These elements have a special property called onclick, which you can use to determine what happens when 
@@ -264,5 +270,25 @@ function pickEight() {
   pick(8);
 }
 function pick (guess) {
-  
-}
+    const numbers = [];
+    while (numbers.length < 10) {   /**A 'while' loop accepts a condition, and will run the code in the block until the condition is no longer true. This while loop should run while numbers.length is less than 10. */
+        numbers.push(Math.floor(Math.random() * 11));
+        }  /**Inside your 'while' loop, push a random number between 0 and 10 to the end of the numbers array. You can create this random number with 'Math.floor(Math.random() * 11)'. */
+        text.innerText = "You picked " + guess + ". Here are the random numbers:\n";  /** '\n' will cause the next part you add to text.innerText to appear on a new line. */
+        for (let i = 0; i < 10; i++) {    /**A 'for' loop runs for a specific number of times. 'for' loops are declared with three expressions separated by semicolons. for (a; b; c), where 'a' is the initialization expression, 'b' is the condition, and 'c' is the final expression. Many 'for' loops use 'i' as the counter and start from 0, so 'let i = 0;' */
+            text.innerText += numbers[i] + "\n";  /**Write the logic to run in the loop. Inside your for loop, use the '+=' operator to add to the end of 'text.innerText'. Add the number at index 'i' of the numbers array, using 'numbers[i]'. Then add a new line, using the escape sequence you used earlier. */
+        }
+        if (numbers.includes(guess)) {  /**The '.includes()' method determines if an array contains an element and will return either true or false. Here is an example of the .includes() syntax: "const numbersArray = [1, 2, 3, 4, 5] const number = 3 if (numbersArray.includes(number)) {console.log("The number is in the array.") }" After your 'for' loop, add an 'if' statement to check if the guess is in the numbers array. You can use the '.includes()' method to check 'if' the array contains the guess. */
+            text.innerText += "Right! You win 20 gold!"     /**Inside the 'if' statement, add the string Right! You win 20 gold! to the end of 'text.innerText'. Also, add 20 to the value of gold and update the 'goldText.innerText'. */
+            gold += 20;
+            goldText.innerText = gold;
+        }   else {
+            text.innerText += "Wrong! You lose 10 health!";        /**When you use the '=' assignment operator, it replaces the current value with the new one. If you set text.innerText to a new value using '=', the previous content is permanently replaced. When you use the += compound assignment operator, it appends the new content to the existing content. This means you are adding to the current value without completely replacing it. It's a way to concatenate or add onto the existing string.*/
+            health -= 10;
+            healthText.innerText = health;
+            if (health <= 0) {
+                lose();
+              }
+          }
+    }
+
